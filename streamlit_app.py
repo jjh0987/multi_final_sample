@@ -172,7 +172,7 @@ else:
         naming = 'naver'
 
     vis = execute.visualization()
-    prediction_method = execute.Prediction(naming)
+    #prediction_method = execute.Prediction(naming)
 
     op_emoji = ':dart:'
     st.sidebar.subheader(f'{op_emoji} {option} 페이지입니다')
