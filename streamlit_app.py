@@ -86,3 +86,43 @@ if option == '메인 홈 Main Home':
                 __단! 모든 예측이 항상 적중하는 것은 아니란 사실을 유념하세요! 투자의 책임은 언제나 스스로 지는 것이니까요!__          
              """)
 
+# 개미 동향 페이지
+elif option == '개미 동향 Ants MIND':  ## fear&greed와 댓글 분석 페이지
+    op_emoji = ':ant:'
+    st.sidebar.subheader(f'{op_emoji} {option} 페이지입니다')
+    st.write(f'''
+             # :cupid: {comp} 개미 투자자 심리
+             ''')
+    ant_col1, ant_col2 = st.columns(2)
+
+    ant_col1.write('# 시험용으로 적어놓은 텍스트임. 추후 수정 예정!!')
+    ant_col1.write(
+        "> 사람의 마음은 매우 복잡하고, 얼기설기 얽혀있어서 연구하고 판단 내리기가 쉽지 않아요. 팀 어나더센스는 개미 투자자들의 심리를 분석하기 위해 여러 방법을 고민하던 중, 😨공포탐욕지수(Fear&Greed Index)🤑를 벤치마킹하기로 결정했어요.")
+    ant_col1.image(
+        'https://mblogthumb-phinf.pstatic.net/MjAyMDAzMTBfMjY5/MDAxNTgzNzk5MDc0MzIw.L52CSqVI9FwSHOzgM_plclsU8SPlm12IiE9HN4vALMIg.b043Hy3Epx1V-OSo3ZnNqjsdvrSZ9jBz7wtTZx84N4Eg.JPEG.sjay34/1583799073661.jpg?type=w800',
+        width=600)
+
+
+# 관련 뉴스 페이지
+elif option == '기사 News':
+    op_emoji = ':newspaper:'
+    # article = execute.Article()
+    # st.sidebar.subheader(f'{op_emoji} {option} 페이지입니다')
+    st.title(f':newspaper: {comp} 관련 뉴스')
+    st.subheader(f"내가 선택한 기업 \"{comp}\"의 🔥최신 이슈🔥들을 모아 볼 수 있어요!")
+
+    sub_opt = st.selectbox(
+        '옵션을 선택해주세요',
+        ('최근 기사', '최근 언론사별 기사'))
+
+    # if sub_opt == '오늘의 기사':
+    #    article = execute.Article(comp,1)
+    #    article.range_article(1)
+    article = execute.Article(comp, 7)
+    if sub_opt == '최근 기사':
+        article.range_article(7)
+    else:
+        article.company_article()
+
+    st.write('You selected:', sub_opt)
+
