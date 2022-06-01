@@ -5,6 +5,14 @@ import execute
 import time
 from datetime import datetime
 
+# 웹페이지 기본 설정
+st.set_page_config(page_title = 'Ants MIND', layout="wide")
+
+# 웹주소 설정
+st.experimental_set_query_params(
+     TEAM=['AnotherSense'],
+     Project=['AntsMIND']
+)
 
 """
 # Welcome to Streamlit!
