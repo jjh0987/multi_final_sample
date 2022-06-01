@@ -35,3 +35,9 @@ option = st.sidebar.selectbox(
     '열람할 페이지를 선택해주세요.',
     ('메인 홈 Main Home', '기업정보 Company Information', '개미 동향 Ants MIND','기사 News','예측 Prediction')
 )
+
+
+SideTab = execute.SideTab()
+SideTab.sidebar_price_now(comp,codenum)
+SideTab.sidebar_price_widget()
+st.sidebar.subheader("krx 데이터에서 갱신됩니다.")
