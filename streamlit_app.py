@@ -216,7 +216,7 @@ else:
             if clf:
                 with st.spinner('Wait for it...'):
                     features = options
-                    prediction_method.bundle(clf, features, train_test_rate, random_state)
+                    #prediction_method.bundle(clf, features, train_test_rate, random_state)
 
             st.write('')
             st.write(f'현재 날짜는 {datetime.strftime((datetime.now()).date(), "%Y-%m-%d")} 입니다.')
