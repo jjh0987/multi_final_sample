@@ -180,7 +180,7 @@ else:
         naming = 'naver'
 
     vis = execute.visualization()
-    #prediction_method = execute.Prediction(naming)
+    prediction_method = execute.Prediction(naming)
 
     op_emoji = ':dart:'
     st.sidebar.subheader(f'{op_emoji} {option} 페이지입니다')
@@ -213,10 +213,101 @@ else:
                                                   min_value=0.05,
                                                   max_value=0.40)
 
-            if clf:
+            if clf == 'DecisionTree':
+                with col1:
+                    max_depth = st.number_input('Setting max_depth', step=1,
+                                                min_value=1,
+                                                max_value=10)
+                    min_samples_split = st.number_input('Setting min_samples_split', step=1,
+                                                        min_value=2,
+                                                        max_value=10)
+                with col2:
+                    min_samples_leaf = st.number_input('Setting min_samples_leaf', step=1,
+                                                       min_value=1,
+                                                       max_value=10)
+
                 with st.spinner('Wait for it...'):
                     features = options
-                    #prediction_method.bundle(clf, features, train_test_rate, random_state)
+                    prediction_method.bundle(prediction_method.dtc(max_depth, min_samples_leaf, min_samples_split)
+                                             , features, train_test_rate, random_state)
+
+            elif clf == 'Logistic':
+                with col1:
+                    l1_ratio = st.number_input('Setting l1_ratio', step=0.05,
+                                               min_value=0.0,
+                                               max_value=1.0)
+
+                with st.spinner('Wait for it...'):
+                    features = options
+                    prediction_method.bundle(prediction_method.logi(l1_ratio)
+                                             , features, train_test_rate, random_state)
+
+            elif clf == 'KNeighbors':
+                with col1:
+                    n_neighbors = st.number_input('Setting n_neighbors', step=1,
+                                                  min_value=2,
+                                                  max_value=10)
+
+                with st.spinner('Wait for it...'):
+                    features = options
+                    prediction_method.bundle(prediction_method.kNN(n_neighbors)
+                                             , features, train_test_rate, random_state)
+
+            elif clf == 'Voting':
+                with st.spinner('Wait for it...'):
+                    features = options
+                    prediction_method.bundle(prediction_method.Vote()
+                                             , features, train_test_rate, random_state)
+
+            elif clf == 'RandomForest':
+                with col1:
+                    max_depth = st.number_input('Setting max_depth', step=1,
+                                                min_value=1,
+                                                max_value=10)
+                    min_samples_split = st.number_input('Setting min_samples_split', step=1,
+                                                        min_value=2,
+                                                        max_value=10)
+                with col2:
+                    min_samples_leaf = st.number_input('Setting min_samples_leaf', step=1,
+                                                       min_value=1,
+                                                       max_value=10)
+                    max_samples = st.number_input('Setting max_samples', step=10,
+                                                  min_value=10,
+                                                  max_value=200)
+
+                with st.spinner('Wait for it...'):
+                    features = options
+                    prediction_method.bundle(prediction_method.RanF(max_depth, min_samples_leaf,
+                                                                    min_samples_split, max_samples)
+                                             , features, train_test_rate, random_state)
+
+            elif clf == 'GradientBoosting':
+                with col1:
+                    max_depth = st.number_input('Setting max_depth', step=1,
+                                                min_value=1,
+                                                max_value=10)
+                    min_samples_split = st.number_input('Setting min_samples_split', step=1,
+                                                        min_value=2,
+                                                        max_value=10)
+                with col2:
+                    min_samples_leaf = st.number_input('Setting min_samples_leaf', step=1,
+                                                       min_value=1,
+                                                       max_value=10)
+                    learning_rate = st.number_input('Setting learning_rate', step=0.01,
+                                                    min_value=0.01,
+                                                    max_value=0.5)
+
+                with st.spinner('Wait for it...'):
+                    features = options
+                    prediction_method.bundle(prediction_method.GradB(max_depth, min_samples_leaf,
+                                                                     min_samples_split, learning_rate)
+                                             , features, train_test_rate, random_state)
+
+            else:
+                with st.spinner('Wait for it...'):
+                    features = options
+                    prediction_method.bundle(prediction_method.xgB()
+                                             , features, train_test_rate, random_state)
 
             st.write('')
             st.write(f'현재 날짜는 {datetime.strftime((datetime.now()).date(), "%Y-%m-%d")} 입니다.')

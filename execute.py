@@ -321,14 +321,6 @@ class Prediction():
 
     def bundle(self, classifier, features, test_size, random):
 
-        DecisionTree = DecisionTreeClassifier(random_state=10)
-        Logistic = LogisticRegression(random_state=10)
-        KNeighbors = KNeighborsClassifier(n_neighbors=4)
-        Voting = VotingClassifier(estimators=[('LR', Logistic), ('KN', KNeighbors)], voting='hard')
-        RandomForest = RandomForestClassifier(random_state=10)
-        GradientBoosting = GradientBoostingClassifier(random_state=10)
-        XGB = xgb.XGBClassifier(random_state=10)
-
         total_tbl_train = self.numeric.loc[:, features]
         total_tbl_label = self.label.iloc[:, 0]
 
@@ -336,23 +328,62 @@ class Prediction():
                                                             , total_tbl_label
                                                             , test_size=test_size,
                                                             random_state=random)
-        choice = {'DecisionTree':DecisionTree,'Logistic':Logistic,'KNeighbors':KNeighbors,
-                  'Voting':Voting,'RandomForest':RandomForest,'GradientBoosting':GradientBoosting,
-                  'XGB':XGB}
 
-        if classifier:
+        #DecisionTree = DecisionTreeClassifier(random_state=10)
+        #Logistic = LogisticRegression(random_state=10)
+        #KNeighbors = KNeighborsClassifier(n_neighbors=4)
+        #Voting = VotingClassifier(estimators=[('LR', Logistic), ('KN', KNeighbors)], voting='hard')
+        #RandomForest = RandomForestClassifier(random_state=10)
+        #GradientBoosting = GradientBoostingClassifier(random_state=10)
+        #XGB = xgb.XGBClassifier(random_state=10)
+        #choice = {'DecisionTree': self.dtc(), 'Logistic': Logistic, 'KNeighbors': KNeighbors,
+        #          'Voting': Voting, 'RandomForest': RandomForest, 'GradientBoosting': GradientBoosting,
+        #          'XGB': XGB}
 
-            clf = choice[classifier]
-            clf.fit(X_train, y_train)  # classifier
-            acc_pred = clf.predict(X_test)
-            acc = np.round(accuracy_score(y_test, acc_pred), 4)
+        clf = classifier
+        clf.fit(X_train, y_train)  # classifier
+        acc_pred = clf.predict(X_test)
+        acc = np.round(accuracy_score(y_test, acc_pred), 4)
 
-            pred = clf.predict(np.array(self.pred_target[features]).reshape(1,-1))
-            if int(pred) == 1:
-                st.success(f'다음날 {self.company} 주가는 상승할것으로 예측됩니다. 예측 정확도는 {round(acc * 100, 2)}% 입니다.')
-            elif int(pred) == 0:
-                st.success(f'다음날 {self.company} 주가는 하락할것으로 예측됩니다. 예측 정확도는 {round(acc * 100, 2)}% 입니다.')
+        pred = clf.predict(np.array(self.pred_target[features]).reshape(1,-1))
+        if int(pred) == 1:
+            st.success(f'다음날 {self.company} 주가는 상승할것으로 예측됩니다. 예측 정확도는 {round(acc * 100, 2)}% 입니다.')
+        elif int(pred) == 0:
+            st.success(f'다음날 {self.company} 주가는 하락할것으로 예측됩니다. 예측 정확도는 {round(acc * 100, 2)}% 입니다.')
 
+    def dtc(self,max_depth,min_samples_leaf,min_samples_split):
+
+        return DecisionTreeClassifier(random_state=10,
+                                      max_depth=max_depth,
+                                      min_samples_leaf=min_samples_leaf,
+                                      min_samples_split=min_samples_split)
+
+    def logi(self,l1_ratio):
+        return LogisticRegression(random_state=10,penalty='elasticnet',l1_ratio=l1_ratio,solver='saga')
+
+    def kNN(self,n_neighbors):
+        return KNeighborsClassifier(n_neighbors=n_neighbors)
+
+    def Vote(self):
+        return VotingClassifier(estimators=[('LR', self.logi(0.5)), ('KN', self.kNN(4))])
+
+    def RanF(self,max_depth,min_samples_leaf,min_samples_split,max_samples):
+        return RandomForestClassifier(random_state=10,
+                                      max_depth=max_depth,
+                                      min_samples_leaf=min_samples_leaf,
+                                      min_samples_split=min_samples_split,
+                                      bootstrap=True,
+                                      max_samples=max_samples)
+
+    def GradB(self,max_depth,min_samples_leaf,min_samples_split,learning_rate):
+        return GradientBoostingClassifier(random_state=10,
+                                          max_depth=max_depth,
+                                          min_samples_leaf=min_samples_leaf,
+                                          min_samples_split=min_samples_split,
+                                          learning_rate=learning_rate)
+
+    def xgB(self):
+        return xgb.XGBClassifier(random_state=10)
 
 class visualization():
 
