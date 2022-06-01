@@ -1,8 +1,9 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
+# Streamlit으로 웹서비스 구현하기
 import streamlit as st
+from PIL import Image
+import execute
+import time
+from datetime import datetime
 
 """
 # Welcome to Streamlit!
@@ -15,24 +16,21 @@ forums](https://discuss.streamlit.io).
 In the meantime, below is an example of what you can do with just a few lines of code:
 """
 
+st.sidebar.subheader(':sparkles: Team Another Sense :sunglasses:')
+# 사이드바1 - 회사 선택 (최상위 선택지)
+comp = st.sidebar.selectbox('🏢 회사를 선택해주세요. ',
+                 ('NAVER', '카카오')) # comp = 기업이름
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+if comp == '카카오':
+    codenum = '035720'
+else:
+    codenum = '035420'
 
-    Point = namedtuple('Point', 'x y')
-    data = []
+# codenum = execute.get_company_code(comp) # codenum = 기업코드
 
-    points_per_turn = total_points / num_turns
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
-
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+# 사이드바2 - 카테고리 선택
+option = st.sidebar.selectbox(
+    '열람할 페이지를 선택해주세요.',
+    ('메인 홈 Main Home', '기업정보 Company Information', '개미 동향 Ants MIND','기사 News','예측 Prediction')
+)
