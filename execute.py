@@ -446,4 +446,4 @@ class visualization():
 
 my_client = MongoClient('mongodb://localhost:27017')
 mydb = my_client['final_project']
-#pd.DataFrame(mydb['kakao_score'].find())
+pd.DataFrame(mydb['kakao_score'].find())

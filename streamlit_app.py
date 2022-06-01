@@ -5,6 +5,12 @@ import execute
 import time
 from datetime import datetime
 
+
+from pymongo import MongoClient
+
+my_client = MongoClient('mongodb://localhost:27017')
+mydb = my_client['final_project']
+st.write(pd.DataFrame(mydb['kakao_score'].find()))
 """
 # Welcome to Streamlit!
 
