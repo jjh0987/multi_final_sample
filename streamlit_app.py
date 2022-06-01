@@ -126,3 +126,139 @@ elif option == '기사 News':
 
     st.write('You selected:', sub_opt)
 
+
+# 기업정보 페이지
+elif option == '기업정보 Company Information':
+    op_emoji = ':information_source:'
+    st.sidebar.subheader(f'{op_emoji} {option} 페이지입니다')
+
+    st.write(f'''
+             # :information_source: {comp} 기업정보
+             ''')
+
+    # 주가 그래프
+    col1, col2 = st.columns(2)
+
+    with col1:
+        visualization = execute.visualization()
+        price_tab = visualization.mean_price(codenum)
+
+    with col2:
+        # 기업정보 보여주는 데이터프레임 4개
+        company = execute.Company()
+        total, rank, stock, foreign, foreign_num, foreign_rate, opinion, goal, high52, low, per, eps = company.get_company_info(
+            codenum)
+        comp_df, comp_df2, comp_df3, comp_df4 = company.get_company_info_df(comp, total, rank, stock, foreign,
+                                                                            foreign_num, foreign_rate, goal, high52,
+                                                                            low, per, eps)
+
+        st.write(comp_df)
+        st.write(comp_df2)
+        st.write(comp_df3)
+        st.write(comp_df4)
+        st.write(
+            f'> 왼쪽의 이미지는 {comp}의 주식가격 흐름을 나타낸 표입니다. 범례에서 확인하실 수 있듯이 분홍색, 초록색, 노랑색의 세 가지 선은 각각 20일, 60일, 120일동안의 이동평균선입니다!')
+
+    st.write('### 투자의견')
+    st.image(f'data/{opinion}.png', width=500)
+
+
+
+# 예측 Prediction 페이지
+else:
+    if comp == '카카오':
+        naming = 'kakao'
+    else:
+        naming = 'naver'
+
+    vis = execute.visualization()
+    prediction_method = execute.Prediction(naming)
+
+    op_emoji = ':dart:'
+    st.sidebar.subheader(f'{op_emoji} {option} 페이지입니다')
+    st.write(f"""
+             # :dart: {comp} 주가 정보 예측 
+             """)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        clf = st.selectbox(
+            'Select Classifier',
+            ('Menu', 'DecisionTree', 'Logistic', 'KNeighbors', 'Voting',
+             'RandomForest', 'GradientBoosting', 'XGB'))
+
+    if clf != 'Menu':
+
+        options = st.multiselect(
+            'Select Features',
+            ['금리', 'vix', '개인', '기관', '외국인', 'score1', 'score2', 'score3'],
+            ['score1', 'score2', 'score3'])
+
+        if options:
+            st.write('Selected Features:', options)
+
+            col1, col2 = st.columns(2)
+            with col1:
+                random_state = st.number_input('Setting Random_state', step=1, min_value=0)
+            with col2:
+                train_test_rate = st.number_input('Setting train_test_rate', step=0.05,
+                                                  min_value=0.05,
+                                                  max_value=0.40)
+
+            if clf:
+                with st.spinner('Wait for it...'):
+                    features = options
+                    prediction_method.bundle(clf, features, train_test_rate, random_state)
+
+            st.write('')
+            st.write(f'현재 날짜는 {datetime.strftime((datetime.now()).date(), "%Y-%m-%d")} 입니다.')
+            st.write('')
+
+            col1, col2 = st.columns(2)
+            with col1:
+                vis.price(codenum)
+
+        else:
+            st.write('You must select Features')
+
+    else:
+        basic_expand = st.expander('Basic Classification')
+        basic_expand.write("""
+                            - 의사결정 트리 학습은 데이터 마이닝에서 일반적으로 사용되는 방법입니다. 
+                            목표는 여러 입력 변수를 기반으로 대상 변수의 값을 예측하는 모델을 만드는 것입니다.
+                        """)
+        basic_expand.write("""
+                            - 로지스틱 회귀의 목적은 일반적인 회귀 분석의 목표와 동일하게 종속 변수와 
+                            독립 변수간의 관계를 구체적인 함수로 나타내어 향후 예측 모델에 사용하는것 입니다.
+                        """)
+        basic_expand.write("""
+                            - 패턴 인식에서, k-최근접 이웃 알고리즘(또는 줄여서 k-NN)은 분류나 회귀에 
+                            사용되는 비모수 방식이다.
+                        """)
+
+        ensemble_expand = st.expander('Ensemble Classification')
+        ensemble_expand.write("""
+                            통계및 기계 학습 에서 앙상블 방법은 지도 학습 알고리즘 단독으로 얻을 수 있는 예측보다 더 나은 예측 
+                            성능을 얻기 위해 여러 학습 알고리즘을 묶어 사용합니다.         
+                         """)
+        ensemble_expand.write('- Voting (Voting method)')
+        ensemble_expand.write('- RandomForest (Bagging method)')
+        ensemble_expand.write('')
+
+        boost_expand = st.expander('Boosting Classification')
+        boost_expand.write("""         
+                       기계 학습 에서 부스팅은 지도학습의 편향과 분산을 줄이기 위한 앙상블 알고리즘 이며 약한 학습자를 
+                       강한 학습자로 변환하는 기계 학습 알고리즘 제품군입니다.     
+                     """)
+        boost_expand.write('- GradientBoosting')
+        boost_expand.write('- XGB')
+        boost_expand.write('')
+
+        feature_expand = st.expander('Feature Infomation')
+        feature_expand.write('- 금리 : cma 금리')
+        feature_expand.write('- vix : 변동성 지수')
+        feature_expand.write('- 개인 : 개인 거래량')
+        feature_expand.write('- 기관 : 기관 거래량')
+        feature_expand.write('- 외국인 : 외국인 거래량')
+        feature_expand.write('- score# : 기사에 대한 점수')
+        feature_expand.write('Random_state 를 수정하면 ')
