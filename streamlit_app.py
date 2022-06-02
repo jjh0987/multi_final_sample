@@ -24,7 +24,6 @@ import pymongo
 
 st.secrets.keys()
 st.secrets.values()
-pymongo.MongoClient(**st.secrets['mongo'])
 my_db = pymongo.MongoClient(host=st.secrets['mongo']['host'],port=st.secrets['mongo']['port'])
 st.write(pd.DataFrame(my_db['final_project']['kakao_score'].find()))
 
