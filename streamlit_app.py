@@ -26,7 +26,7 @@ st.secrets.keys()
 st.secrets.values()
 @st.experimental_singleton
 def init_connection():
-    return pymongo.MongoClient(host=st.secrets['mongo']['host'],port=st.secrets['mongo']['port'])
+    return pymongo.MongoClient(host=st.secrets['mongo']['host'],port=st.secrets['mongo']['port'],)
 client = init_connection()
 
 @st.experimental_memo(ttl=600)
