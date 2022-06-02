@@ -475,6 +475,6 @@ class visualization():
 
         st.pyplot(fig)
 
-#my_client = MongoClient('mongodb://localhost:27017')
-#mydb = my_client['final_project']
-#pd.DataFrame(mydb['kakao_score'].find())
+my_client = MongoClient('mongodb://18.181.49.139/:27017')
+mydb = my_client['test']
+tp = pd.DataFrame(mydb['tester1'].find())
