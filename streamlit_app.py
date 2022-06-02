@@ -19,7 +19,7 @@ st.experimental_set_query_params(
 
 import streamlit as st
 import pymongo
-
+'''
 # Initialize connection.
 # Uses st.experimental_singleton to only run once.
 @st.experimental_singleton
@@ -42,7 +42,7 @@ items = get_data()
 # Print results.
 for item in items:
     st.write(f"{item['score1']} has a :{item['score2']}:")
-
+'''
 
 
 
