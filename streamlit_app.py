@@ -14,13 +14,7 @@ st.experimental_set_query_params(
      Project=['AntsMIND']
 )
 
-from pymongo import MongoClient
-import pandas as pd
-my_client = MongoClient('mongodb://18.181.49.139/:27017')
-db = my_client['test']
-my_col = db['tester1']
 
-st.write(pd.DataFrame(my_col.find({})))
 
 
 """
