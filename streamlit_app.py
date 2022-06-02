@@ -1,4 +1,5 @@
 # Streamlit으로 웹서비스 구현하기
+import pandas as pd
 import streamlit as st
 from PIL import Image
 import execute
@@ -20,35 +21,12 @@ st.experimental_set_query_params(
 import streamlit as st
 import pymongo
 
-# Initialize connection.
-# Uses st.experimental_singleton to only run once.
-@st.experimental_singleton
-def init_connection():
-    return pymongo.MongoClient(**st.secrets["mongo"])
 
-client = init_connection()
-
-# Pull data from the collection.
-# Uses st.experimental_memo to only rerun when the query changes or after 10 min.
-@st.experimental_memo(ttl=600)
-def get_data():
-    db = client.final_project
-    items = db.naver_score.find()
-    items = list(items)  # make hashable for st.experimental_memo
-    return items
-
-items = get_data()
-
-# Print results.
-for item in items:
-    st.write(f"{item['score1']} has a :{item['score2']}:")
-
-
-
-
-
-
-
+st.secrets.keys()
+st.secrets.values()
+pymongo.MongoClient(**st.secrets['mongo'])
+my_db = pymongo.MongoClient(host=st.secrets['mongo']['host'],port=st.secrets['mongo']['port'])
+st.write(pd.DataFrame(my_db['final_project']['kakao_score'].find()))
 
 """
 # Welcome to Streamlit!
