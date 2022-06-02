@@ -13,7 +13,7 @@ st.experimental_set_query_params(
      TEAM=['AnotherSense'],
      Project=['AntsMIND']
 )
-
+st.write(execute.tp)
 """
 # Welcome to Streamlit!
 
