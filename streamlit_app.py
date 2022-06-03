@@ -35,9 +35,9 @@ def get_data():
     items = db.kakao_score.find()
     return items
 
-#items = get_data()
+items = get_data()
 
-#st.write(pd.DataFrame(items))
+st.write(pd.DataFrame(items))
 
 """
 # Welcome to Streamlit!
