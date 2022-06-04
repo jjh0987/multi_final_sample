@@ -66,7 +66,7 @@ class SideTab():
                           value=f"{temp0[2]} 원",
                           delta=-int(temp[5]),
                           delta_color='off')
-        else:
+        elif '상승' in temp:
             with st.sidebar:
                 st.metric(label=comp,
                     value=f"{temp0[2]} 원",
