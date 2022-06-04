@@ -64,7 +64,7 @@ class SideTab():
             with st.sidebar:
                 st.metric(label=comp,
                           value=f"{temp0[2]} 원",
-                          delta=f'{-int(temp[5])} ({temp[-4]}%)',
+                          delta=-int(temp[5]),
                           delta_color='off')
         else:
             with st.sidebar:
