@@ -60,11 +60,13 @@ class SideTab():
         exday = bs_obj.find_all('p', {'class': 'no_exday'})
         temp0 = [i.text for i in today][0].split('\n')
         temp = [i.text for i in exday][0].split('\n')
+        tp = -int(temp[5].replace(',',''))
+        
         if '하락' in temp:
             with st.sidebar:
                 st.metric(label=comp,
                           value=f"{temp0[2]} 원",
-                          delta=f'{-int(temp[5])} (-{temp[-4]}%)',
+                          delta=f'{tp} (-{temp[-4]}%)',
                           delta_color='off')
         elif '상승' in temp:
             with st.sidebar:
