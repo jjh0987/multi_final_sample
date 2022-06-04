@@ -60,12 +60,18 @@ class SideTab():
         exday = bs_obj.find_all('p', {'class': 'no_exday'})
         temp0 = [i.text for i in today][0].split('\n')
         temp = [i.text for i in exday][0].split('\n')
-
-        with st.sidebar:
-            st.metric(label=comp,
-                value=f"{temp0[2]} 원",
-                delta=f'{temp[5]} ({temp[-4]}%)',
-                delta_color='off')
+        if '하락' in temp:
+            with st.sidebar:
+                st.metric(label=comp,
+                          value=f"{temp0[2]} 원",
+                          delta=f'{-int(temp[5])} ({temp[-4]}%)',
+                          delta_color='off')
+        else:
+            with st.sidebar:
+                st.metric(label=comp,
+                    value=f"{temp0[2]} 원",
+                    delta=f'{temp[5]} ({temp[-4]}%)',
+                    delta_color='off')
 
     def sidebar_price_widget(self):
         url = 'http://www.krx.co.kr/main/main.jsp'
