@@ -20,7 +20,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 import xgboost as xgb
 
 
-@st.cache(suppress_st_warning=True)
+#@st.cache(suppress_st_warning=True)
 
 # 사용된 데이터 csv는 데이터 폴더로 축적
 # 추후 몽고 연동
