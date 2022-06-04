@@ -50,6 +50,7 @@ class SideTab():
                           delta_color='off')
     '''
     def sidebar_price_now(self,comp,comp_code):
+        comp_code = '035720'
         url = f'https://finance.naver.com/item/main.naver?code={comp_code}'
         headers = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36'}
@@ -64,13 +65,11 @@ class SideTab():
             with st.sidebar:
                 st.metric(label=comp,
                           value=f"{temp0[2]} 원",
-                          delta=-int(temp[5]),
                           delta_color='off')
         elif '상승' in temp:
             with st.sidebar:
                 st.metric(label=comp,
                     value=f"{temp0[2]} 원",
-                    delta=f'{temp[5]} ({temp[-4]}%)',
                     delta_color='off')
 
     def sidebar_price_widget(self):
